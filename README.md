@@ -35,3 +35,80 @@ def get_temp_from_voltage(v):
 
 print(get_temp_from_voltage(0.036))
 ```
+
+# Graduation image generation
+
+```
+from PIL import Image, ImageDraw, ImageFont
+
+MIN_TEMP = 10
+MAX_TEMP = 100
+TICK_EVERY = 10
+BG_COLOR = "black"
+FILL_COLOR = "white"
+MARGIN_TEXT_LEFT = 2
+# Set the size of the margins
+margin_top, margin_bottom = 10, 10
+
+# Set the width and height of the image
+width, height = 50, 200-margin_bottom-margin_top
+
+# Create a new image with white background
+image = Image.new('RGB', (width, height + margin_top + margin_bottom), BG_COLOR)
+
+# Create an object to draw on the image
+draw = ImageDraw.Draw(image)
+
+# Set the font for the text
+font = ImageFont.truetype('arial.ttf', 12)
+
+# Draw the ticks and numbers
+for i in range(MIN_TEMP, MAX_TEMP+1, TICK_EVERY):
+    y = height - int(i * height / 100) + margin_top
+    draw.line((width / 1.2, y, width, y), fill=FILL_COLOR)
+    draw.text((MARGIN_TEXT_LEFT, y - font.size / 2), f'{i}°C', fill=FILL_COLOR, font=font)
+
+# Save the image as a jpg file
+image.save('graduation.jpg')
+
+```
+
+```
+from PIL import Image, ImageDraw, ImageFont
+
+MIN_VALUE = 0
+MAX_VALUE = 15
+TICK_EVERY = 2
+BG_COLOR = "black"
+FILL_COLOR = "white"
+
+# Set the width and height of the image
+width, height = 320-50, 10
+
+# Create a new image with white background
+image = Image.new('RGB', (width, height), BG_COLOR)
+
+# Create an object to draw on the image
+draw = ImageDraw.Draw(image)
+
+# Set the font for the text
+font = ImageFont.truetype('arial.ttf', 8)
+
+# Draw the ticks and numbers
+for i in range(MIN_VALUE, MAX_VALUE+1, TICK_EVERY):
+    x = int(i * width / MAX_VALUE)
+    draw.line((x, 4, x, 0), fill=FILL_COLOR)
+
+    if i == MAX_VALUE:
+        draw.text((x - font.size*1.5, 0), f'{i}', fill=FILL_COLOR, font=font)
+    else:
+        draw.text((x + font.size/2, 0), f'{i}', fill=FILL_COLOR, font=font)
+
+# Save the image as a jpg file
+image.save('graduationh.jpg')
+
+```
+
+# Nextion screen notes
+
+File too large -> check font, using ascii with only qwertzuiopasdfghjklyxcvbnm:,.-_*/()="#%&?^~0123456789+°QWERTZUIOPASDFGHJKLYXCVBNM
